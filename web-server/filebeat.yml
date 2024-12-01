@@ -1,0 +1,36 @@
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /root/ec-assignment/web-server/server_metrics.log
+    fields:
+      log_source: "web_server"
+    fields_under_root: true
+
+# ============================== Elasticsearch Output ==========================
+output.elasticsearch:
+  # Elasticsearch hosts
+  hosts: ["https://3949c84099c54fb68a2ec344ba38eccd.us-west-1.aws.found.io:443"]
+  username: "elastic"                        
+  password: "0aHr7BZThV3aRIxyZhageUgi"                       
+
+# =============================== Logging ================================
+logging:
+  level: info
+  to_files: true
+  files:
+    path: /var/log/filebeat
+    name: filebeat.log
+    keepfiles: 7
+    permissions: 0644
+
+# ============================== Processors ===============================
+processors:
+  - decode_json_fields:
+      fields: ["message"]  # Assumes the logs are in JSON format
+      target: ""           # Keep the JSON fields at the root level
+      overwrite_keys: true
+  - drop_fields:
+      fields: ["agent.ephemeral_id", "agent.name", "agent.type", "agent.version"]
