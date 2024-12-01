@@ -1,5 +1,5 @@
 # log-visualizer
-Visualize software logs in one place.
+Visualize and search software logs in one place.
 
 Features: 
 - Query logs with fuzzy search
